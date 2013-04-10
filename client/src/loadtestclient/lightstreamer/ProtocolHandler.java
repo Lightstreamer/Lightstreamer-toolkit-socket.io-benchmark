@@ -182,11 +182,11 @@ public class ProtocolHandler {
     }
 
     private void readUpdate(String text, int pointer) {
-    	//actually we don't care, we only want to create load on the server 
-    	
-    	
-    	
-    	
+        //actually we don't care, we only want to create load on the server 
+        
+        
+        
+        
         //skip 1,1,
         
         pointer += 5;

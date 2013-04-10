@@ -31,35 +31,35 @@ import com.netiq.websocket.WebSocketClient;
 
 public class SocketIOClient extends WebSocketClient {
 
-	protected ClientListener listener;
-	protected Map<String, Long> requests = new HashMap<String, Long>();
+    protected ClientListener listener;
+    protected Map<String, Long> requests = new HashMap<String, Long>();
 
-	protected static int nextId = 0;
+    protected static int nextId = 0;
 
-	protected int id;
+    protected int id;
 
-	public SocketIOClient(URI server, ClientListener listener) {
-		super(server);
+    public SocketIOClient(URI server, ClientListener listener) {
+        super(server);
 
-		this.listener = listener;
-		id = nextId;
+        this.listener = listener;
+        id = nextId;
 
-		nextId++;
-	}
+        nextId++;
+    }
 
-	@Override
-	public void onClose() {
-		this.listener.onClose();
-	}
+    @Override
+    public void onClose() {
+        this.listener.onClose();
+    }
 
-	@Override
-	public void onIOError(IOException arg0) {
-		System.out.println("error: " + arg0);
-	}
+    @Override
+    public void onIOError(IOException arg0) {
+        System.out.println("error: " + arg0);
+    }
 
-	@Override
-	public void onMessage(String message) {
-	    switch (message.toCharArray()[0]) {
+    @Override
+    public void onMessage(String message) {
+        switch (message.toCharArray()[0]) {
             case '5':
                 // We want to extract the actual message. Going to hack this shit.
                 String[] messageParts = message.split(":");
@@ -70,35 +70,35 @@ public class SocketIOClient extends WebSocketClient {
                 
                 break;
         }
-	}
+    }
 
-	@Override
-	public void onOpen() {
-		this.listener.onOpen();
-	}
+    @Override
+    public void onOpen() {
+        this.listener.onOpen();
+    }
 
-	public static URI getNewSocketURI(String server) {
-		try {
-			URL url = new URL("http://" + server + "/socket.io/1/");
-			HttpURLConnection connection = (HttpURLConnection) url
-					.openConnection();
-			connection.setDoOutput(true);
-			connection.setDoInput(true);
-			connection.setRequestMethod("POST");
+    public static URI getNewSocketURI(String server) {
+        try {
+            URL url = new URL("http://" + server + "/socket.io/1/");
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setRequestMethod("POST");
 
-			DataOutputStream wr = new DataOutputStream(
-					connection.getOutputStream());
-			wr.flush();
-			wr.close();
+            DataOutputStream wr = new DataOutputStream(
+                    connection.getOutputStream());
+            wr.flush();
+            wr.close();
 
-			BufferedReader rd = new BufferedReader(new InputStreamReader(
-					connection.getInputStream()));
-			String line = rd.readLine();
-			String hskey = line.split(":")[0];
-			return new URI("ws://" + server + "/socket.io/1/websocket/" + hskey);
-		} catch (Exception e) {
-			System.out.println("error: " + e);
-			return null;
-		}
-	}
+            BufferedReader rd = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream()));
+            String line = rd.readLine();
+            String hskey = line.split(":")[0];
+            return new URI("ws://" + server + "/socket.io/1/websocket/" + hskey);
+        } catch (Exception e) {
+            System.out.println("error: " + e);
+            return null;
+        }
+    }
 }

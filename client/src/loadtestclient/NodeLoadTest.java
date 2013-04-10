@@ -31,81 +31,81 @@ import loadtestclient.socket_io.SocketIOClient;
 public class NodeLoadTest {
 
     
-	private static int INCREASE_CLIENTS = 100;
-	private static int TEST_DURATION_MS = 60000;
-	private static int CONNECT_BATCH_SIZE = 100;
-	private static int CONNECT_BATCH_INTERVAL = 1000;
-	
-	private static int MAX_DELAY_MILLIS = 5000;
-	
-	private static int PORT = 8080;
-	private static String HOST = "localhost";
-	          
-	private static String FILE_PATH = "results.log";
-	private static boolean TAB_LOG = true;
-	
-	
-	private static int currentClients = 0;
-	private static int expectingClients = 0;
-	private static int disconnectedClients = 0;
-	
-	private static Statistics stats = null;
+    private static int INCREASE_CLIENTS = 100;
+    private static int TEST_DURATION_MS = 60000;
+    private static int CONNECT_BATCH_SIZE = 100;
+    private static int CONNECT_BATCH_INTERVAL = 1000;
     
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		
-		if (args.length < 1) {
-			return;
-		}
-		boolean useIO = args[0].equals("io");
-		String type = useIO ? "io" : "ls";
-		
-		if (args.length > 1) {
+    private static int MAX_DELAY_MILLIS = 5000;
+    
+    private static int PORT = 8080;
+    private static String HOST = "localhost";
+              
+    private static String FILE_PATH = "results.log";
+    private static boolean TAB_LOG = true;
+    
+    
+    private static int currentClients = 0;
+    private static int expectingClients = 0;
+    private static int disconnectedClients = 0;
+    
+    private static Statistics stats = null;
+    
+    
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        
+        if (args.length < 1) {
+            return;
+        }
+        boolean useIO = args[0].equals("io");
+        String type = useIO ? "io" : "ls";
+        
+        if (args.length > 1) {
 
-			Properties props = new Properties();
-			try {
-				props.load(new FileInputStream(new File(args[1])));
-			} catch (IOException e) {
-			}
-			
-			INCREASE_CLIENTS = Integer.parseInt(props.getProperty("INCREASE_CLIENTS"));
-			TEST_DURATION_MS = Integer.parseInt(props.getProperty("TEST_DURATION_MS"));
-			CONNECT_BATCH_SIZE = Integer.parseInt(props.getProperty("CONNECT_BATCH_SIZE"));
-			CONNECT_BATCH_INTERVAL = Integer.parseInt(props.getProperty("CONNECT_BATCH_INTERVAL"));
-			
-			MAX_DELAY_MILLIS = Integer.parseInt(props.getProperty("MAX_DELAY_MILLIS"));
-			
-			HOST = props.getProperty("HOST");
-			PORT = Integer.parseInt(props.getProperty("PORT"));
-			
-			FILE_PATH = props.getProperty("FILE_PATH");
-			
-			TAB_LOG = props.getProperty("TAB_LOG").equals("true");
-			
-		}
-		
-		final String SERVER_URL = "http://"+HOST+":"+PORT;
-		
-		CListener currentTestListener = new CListener(); 
-		
-		while(true) {
-		    expectingClients += INCREASE_CLIENTS;
-		     		
-    		if (stats != null) {
-    		    stats.onTestComplete();
-    		}
-    		
-    		System.out.println("Launching "+INCREASE_CLIENTS+ " new clients");
-    		
-    		stats = new Statistics(type,expectingClients,TAB_LOG,FILE_PATH,MAX_DELAY_MILLIS);
-	
-    		//connect the clients CONNECT_BATCH_SIZE at a time, then wait CONNECT_BATCH_INTERVAL
-    	    for (int i = 0; i < INCREASE_CLIENTS;) {
-        	    for (int b = 0; b < CONNECT_BATCH_SIZE && i < INCREASE_CLIENTS; b++,i++) {
-        	        try {
+            Properties props = new Properties();
+            try {
+                props.load(new FileInputStream(new File(args[1])));
+            } catch (IOException e) {
+            }
+            
+            INCREASE_CLIENTS = Integer.parseInt(props.getProperty("INCREASE_CLIENTS"));
+            TEST_DURATION_MS = Integer.parseInt(props.getProperty("TEST_DURATION_MS"));
+            CONNECT_BATCH_SIZE = Integer.parseInt(props.getProperty("CONNECT_BATCH_SIZE"));
+            CONNECT_BATCH_INTERVAL = Integer.parseInt(props.getProperty("CONNECT_BATCH_INTERVAL"));
+            
+            MAX_DELAY_MILLIS = Integer.parseInt(props.getProperty("MAX_DELAY_MILLIS"));
+            
+            HOST = props.getProperty("HOST");
+            PORT = Integer.parseInt(props.getProperty("PORT"));
+            
+            FILE_PATH = props.getProperty("FILE_PATH");
+            
+            TAB_LOG = props.getProperty("TAB_LOG").equals("true");
+            
+        }
+        
+        final String SERVER_URL = "http://"+HOST+":"+PORT;
+        
+        CListener currentTestListener = new CListener(); 
+        
+        while(true) {
+            expectingClients += INCREASE_CLIENTS;
+                     
+            if (stats != null) {
+                stats.onTestComplete();
+            }
+            
+            System.out.println("Launching "+INCREASE_CLIENTS+ " new clients");
+            
+            stats = new Statistics(type,expectingClients,TAB_LOG,FILE_PATH,MAX_DELAY_MILLIS);
+    
+            //connect the clients CONNECT_BATCH_SIZE at a time, then wait CONNECT_BATCH_INTERVAL
+            for (int i = 0; i < INCREASE_CLIENTS;) {
+                for (int b = 0; b < CONNECT_BATCH_SIZE && i < INCREASE_CLIENTS; b++,i++) {
+                    try {
                         if (useIO) {
                             URI uri = SocketIOClient.getNewSocketURI(HOST+":"+PORT);
                             SocketIOClient c = new SocketIOClient(uri,currentTestListener);
@@ -116,40 +116,40 @@ public class NodeLoadTest {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-        	        
-        	    }
-        	    try {
+                    
+                }
+                try {
                     Thread.sleep(CONNECT_BATCH_INTERVAL);
                 } catch (InterruptedException e) {
                 }
-    	    }
-    	    
-    	    try {
+            }
+            
+            try {
                 Thread.sleep(TEST_DURATION_MS);
             } catch (InterruptedException e) {
             }
-		}
-		
-		
-		
-	}
-	
-	
-	private static class CListener implements ClientListener {
-	    
-      	    public CListener() {
-	        
-	    }
-	    
-	    
-	    
+        }
+        
+        
+        
+    }
+    
+    
+    private static class CListener implements ClientListener {
+        
+              public CListener() {
+            
+        }
+        
+        
+        
         public synchronized void onOpen() {
 
-        	currentClients++;
-        	if (currentClients%50 == 0) {
-        		System.out.println("Connected " + currentClients + " clients");
-        	}
-        	
+            currentClients++;
+            if (currentClients%50 == 0) {
+                System.out.println("Connected " + currentClients + " clients");
+            }
+            
             if (currentClients == expectingClients) {
                 System.out.println("New clients connected. Currently a total of " + currentClients + " clients connected");
                 stats.onRampUpEnd();
@@ -157,13 +157,13 @@ public class NodeLoadTest {
         }
 
         public void onError() {
-        	System.out.println("GOT ERROR!");
+            System.out.println("GOT ERROR!");
         }
 
         public synchronized void onClose() {
-        	disconnectedClients++;
-        	currentClients--;
-        	System.out.println("WARNING disconnected client! Currently " + disconnectedClients + " disconnected clients");
+            disconnectedClients++;
+            currentClients--;
+            System.out.println("WARNING disconnected client! Currently " + disconnectedClients + " disconnected clients");
         }
 
         @Override
