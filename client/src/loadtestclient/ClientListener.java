@@ -13,7 +13,7 @@ Copyright 2013 Weswit s.r.l.
    See the License for the specific language governing permissions and
    limitations under the License.
 */   
-package loadtestrunner;
+package loadtestclient;
 
 
 public interface ClientListener {

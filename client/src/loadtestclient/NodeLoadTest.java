@@ -13,7 +13,7 @@ Copyright 2013 Weswit s.r.l.
    See the License for the specific language governing permissions and
    limitations under the License.
 */   
-package loadtestrunner;
+package loadtestclient;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,9 +21,10 @@ import java.net.URI;
 import java.util.Date;
 import java.util.Properties;
 
-import socket.io.client.fake.SocketIOClient;
+import loadtestclient.lightstreamer.BasicWSClient;
+import loadtestclient.socket_io.SocketIOClient;
 
-import com.lightstreamer.client_ws.fake.BasicWSClient;
+
 
 
 

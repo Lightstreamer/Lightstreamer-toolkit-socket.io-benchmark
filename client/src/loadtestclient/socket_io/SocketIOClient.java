@@ -13,7 +13,7 @@ Copyright 2013 Weswit s.r.l.
    See the License for the specific language governing permissions and
    limitations under the License.
 */   
-package socket.io.client.fake;
+package loadtestclient.socket_io;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -25,7 +25,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import loadtestrunner.ClientListener;
+import loadtestclient.ClientListener;
 
 import com.netiq.websocket.WebSocketClient;
 

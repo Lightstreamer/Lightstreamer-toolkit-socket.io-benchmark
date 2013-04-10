@@ -13,7 +13,7 @@ Copyright 2013 Weswit s.r.l.
    See the License for the specific language governing permissions and
    limitations under the License.
 */   
-package com.lightstreamer.client_ws.fake;
+package loadtestclient.lightstreamer;
 
 public interface WSAdapter {
 

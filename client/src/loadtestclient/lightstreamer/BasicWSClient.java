@@ -13,12 +13,12 @@ Copyright 2013 Weswit s.r.l.
    See the License for the specific language governing permissions and
    limitations under the License.
 */   
-package com.lightstreamer.client_ws.fake;
+package loadtestclient.lightstreamer;
 
 
 import java.net.URI;
 
-import loadtestrunner.ClientListener;
+import loadtestclient.ClientListener;
 
 public class BasicWSClient implements WSAdapter {
 
