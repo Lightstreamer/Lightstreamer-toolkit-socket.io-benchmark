@@ -10,17 +10,17 @@ you can install everything using npm
 ## Run ##
 
 
-*   Launch Lightstreamer client example:
+*   Launch Lightstreamer server:
     Install and configure the Lightstreamer server following its instructions
     Create a new folder in its adapters subfolder
     Copy the adapters.xml file from server/conf/adapters.xml
     Create a lib folder
-    Copy the ls-proxy-adapters.jar from ... into it
+    Copy the ls-proxy-adapters.jar from the Lightstreamer distribution into it (you can find it under DOCS-SDKs/sdk_adapter_remoting_infrastructure/lib)
     Start Lightstreamer
     From the server folder run
         node src/server ls ../conf/conf.js
 
-*   Launch Socket.io client example:
+*   Launch Socket.io server:
     From the server folder run
         node src/server io ../conf/conf.js
 
@@ -52,8 +52,5 @@ From the client folder
         
 
 # Lightstreamer Compatibility Notes #
-
-
-        
-        
-        
+Compatible with Lightstreamer Server since 5.0
+Compatible with Adapter Remoting Infrastructure since 1.4.3
