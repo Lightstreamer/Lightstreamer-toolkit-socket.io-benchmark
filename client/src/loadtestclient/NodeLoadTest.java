@@ -42,6 +42,7 @@ public class NodeLoadTest {
 	private static String HOST = "localhost";
 	          
 	private static String FILE_PATH = "results.log";
+	private static boolean TAB_LOG = true;
 	
 	
 	private static int currentClients = 0;
@@ -82,6 +83,8 @@ public class NodeLoadTest {
 			
 			FILE_PATH = props.getProperty("FILE_PATH");
 			
+			TAB_LOG = props.getProperty("TAB_LOG").equals("true");
+			
 		}
 		
 		final String SERVER_URL = "http://"+HOST+":"+PORT;
@@ -97,7 +100,7 @@ public class NodeLoadTest {
     		
     		System.out.println("Launching "+INCREASE_CLIENTS+ " new clients");
     		
-    		stats = new Statistics(type+" "+expectingClients,FILE_PATH,MAX_DELAY_MILLIS);
+    		stats = new Statistics(type,expectingClients,TAB_LOG,FILE_PATH,MAX_DELAY_MILLIS);
 	
     		//connect the clients CONNECT_BATCH_SIZE at a time, then wait CONNECT_BATCH_INTERVAL
     	    for (int i = 0; i < INCREASE_CLIENTS;) {

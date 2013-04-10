@@ -46,11 +46,18 @@ public class Statistics {
     
     //string buffer used to compone log report
     StringBuffer results = new StringBuffer();
+    
     private boolean alive = true;
+    private String type;
+    private int clientsNum;
+    private boolean tabLog;
     
     
-    public Statistics(String testName, String fileName, int maxDelayMillis) {
-        this.testName = testName;
+    public Statistics(String type, int clientsNum, boolean tabLog, String fileName, int maxDelayMillis) {
+        this.testName = "Test " + type + " " + clientsNum;
+        this.type = type;
+        this.clientsNum = clientsNum;
+        this.tabLog = tabLog;
         this.fileName = fileName;
         
         //in case delays > conf.maxDelayMillis are received then the code will fail and conf.maxDelayMillis have to be changed
@@ -91,22 +98,19 @@ public class Statistics {
 
         this.alive  = false;
         
-        results.append("*********Test ");
-        results.append(this.testName);
+        this.append(results, "*********TEST ", "", this.type);
+        this.append(results, "Clients ", "", this.clientsNum);
         
       //THROUGHPUT
         long spentTime = new Date().getTime()-this.startTime;
         long throughput = totUpdates/(spentTime/1000);
-        results.append("\nThroughput ");
-        results.append(throughput);
-        results.append(" messages per second");
-      
+       
+        this.append(results, "Throughput ", " messages per second", throughput);
+        
       //MEAN
         //calculate the average delay
         long mean = totDelays/totUpdates; 
-        results.append("\nMean ");
-        results.append(mean);
-        results.append(" millis");
+        this.append(results, "Mean ", " millis", mean);
         
       //STANDARD-DEVIATION RELATED
         //sum needed to calculate the standard deviation: sqrt {[ (value1-avg)^2 + (value2-avg)^2 + (value3-avg)^2 ... (valueN-avg)^2] / N }
@@ -125,9 +129,7 @@ public class Statistics {
                     medianSum+=this.delays[i];
                     if (medianSum >= medianPosition) {
                         median = true;
-                        results.append("\nMedian ");
-                        results.append(i);
-                        results.append(" millis");
+                        this.append(results, "Median ", " millis", i);
                     }
                 }
                             
@@ -139,9 +141,8 @@ public class Statistics {
         }
         
         long deviation = Math.round(Math.sqrt((double)deviationSum/totUpdates)); 
-        results.append("\nStandard deviation ");
-        results.append(deviation);
-        results.append("\n\n");
+        this.append(results, "Standard deviation ", "", deviation);
+        results.append("\n");
         
         File file = new File(fileName);
         try {
@@ -160,6 +161,21 @@ public class Statistics {
       
         
         
+    }
+    
+    private void append(StringBuffer results,String prefix,String suffix,long val) {
+        this.append(results,prefix,suffix,String.valueOf(val));
+    }
+    private void append(StringBuffer results,String prefix,String suffix,String val) {
+        if(this.tabLog) {
+            results.append(val);
+            results.append(",");
+        } else {
+            results.append(prefix);
+            results.append(val);
+            results.append(suffix);   
+            results.append("\n");
+        }
     }
     
     private void dequeueData() {
