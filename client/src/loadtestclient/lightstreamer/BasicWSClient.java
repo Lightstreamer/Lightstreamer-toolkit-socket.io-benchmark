@@ -13,10 +13,8 @@ Copyright 2013 Weswit s.r.l.
    See the License for the specific language governing permissions and
    limitations under the License.
 */   
-package loadtestclient.lightstreamer;
+package loadtestclient.client;
 
-
-import java.net.URI;
 
 import loadtestclient.ClientListener;
 
@@ -32,22 +30,18 @@ public class BasicWSClient implements WSAdapter {
     
     private ClientListener listener;
     private ProtocolHandler protocolHandler;
-    private WebSocketConnection networkHandler;
     
-    public BasicWSClient(String server, ClientListener listener2) throws Exception {
-        
+    public BasicWSClient(String server, ClientListener listener2, boolean useIO) throws Exception {
         this.listener = listener2;
         
+        if (useIO) {
+            this.protocolHandler = new ProtocolHandlerIO(this,server);//escapes!
+        } else {
+            this.protocolHandler = new ProtocolHandlerLS(this,server,"NODEJS_PERF_TEST",1000000);//escapes!
+        }
         
-        this.protocolHandler = new ProtocolHandler(this,"NODEJS_PERF_TEST",1000000);//escapes!
-        this.networkHandler = new WebSocketConnection(new URI((server.indexOf("http") == 0 ? server.replaceFirst("http", "ws") : server) + "/lightstreamer"));
         
-        this.protocolHandler.setNetworkHandler(this.networkHandler);
-        this.networkHandler.setMessageListener(this.protocolHandler);
-        
-      
-        this.networkHandler.open();
-        
+        this.protocolHandler.open();
     }
     
     public void send(String message) {
@@ -55,7 +49,7 @@ public class BasicWSClient implements WSAdapter {
     }
     
     public void close() {
-        this.networkHandler.close();
+        this.protocolHandler.close();
     }
     
     void forwardClose() {

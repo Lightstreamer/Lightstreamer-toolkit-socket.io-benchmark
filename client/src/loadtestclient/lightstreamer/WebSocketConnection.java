@@ -13,7 +13,7 @@ Copyright 2013 Weswit s.r.l.
    See the License for the specific language governing permissions and
    limitations under the License.
 */   
-package loadtestclient.lightstreamer;
+package loadtestclient.client;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -85,19 +85,15 @@ public class WebSocketConnection  {
     private boolean secure;
 
 
-
-
-    public WebSocketConnection(URI uri) {
-        this.targetServer = uri;
-        this.secure = this.targetServer.getScheme().equals("wss");
-    }
     
     public void setMessageListener(ProtocolHandler protocolHandler) {
         this.protocolHandler = protocolHandler;
     }
     
 
-    public void open() throws Exception {
+    public void open(URI uri) throws Exception {
+        this.targetServer = uri;
+        this.secure = this.targetServer.getScheme().equals("wss");
         try {
             final WebSocketClientHandshaker handshaker = webSocketClientHandshakerFactory.newHandshaker(this.targetServer, WebSocketVersion.V13, "js.lightstreamer.com", false, null);
             
@@ -215,7 +211,7 @@ public class WebSocketConnection  {
             Channel ch = ctx.getChannel();
             if (!handshaker.isHandshakeComplete()) {
                 handshaker.finishHandshake(ch, (HttpResponse) e.getMessage());
-                protocolHandler.createSession();
+                protocolHandler.handleSocketOpen();
                 return;
             }
               
