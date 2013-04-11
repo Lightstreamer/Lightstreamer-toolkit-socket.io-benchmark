@@ -17,12 +17,10 @@ package loadtestclient;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.util.Date;
 import java.util.Properties;
 
-import loadtestclient.lightstreamer.BasicWSClient;
-import loadtestclient.socket_io.SocketIOClient;
+import loadtestclient.client.BasicWSClient;
 
 
 
@@ -50,6 +48,7 @@ public class NodeLoadTest {
     private static int disconnectedClients = 0;
     
     private static Statistics stats = null;
+    
     
     
     /**
@@ -87,7 +86,7 @@ public class NodeLoadTest {
             
         }
         
-        final String SERVER_URL = "http://"+HOST+":"+PORT;
+        final String SERVER_URL = HOST+":"+PORT;
         
         CListener currentTestListener = new CListener(); 
         
@@ -106,13 +105,9 @@ public class NodeLoadTest {
             for (int i = 0; i < INCREASE_CLIENTS;) {
                 for (int b = 0; b < CONNECT_BATCH_SIZE && i < INCREASE_CLIENTS; b++,i++) {
                     try {
-                        if (useIO) {
-                            URI uri = SocketIOClient.getNewSocketURI(HOST+":"+PORT);
-                            SocketIOClient c = new SocketIOClient(uri,currentTestListener);
-                            c.connect();
-                        } else {
-                            new BasicWSClient(SERVER_URL,currentTestListener);
-                        }
+                        
+                        new BasicWSClient(SERVER_URL,currentTestListener,useIO);
+                     
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
