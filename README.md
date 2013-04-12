@@ -45,7 +45,7 @@ The clients used to run the load tests are not full-fledged clients of their res
 ### Required libs ###
 *   netty-3.5.8.Final.jar
 
-You can download netty from its website ( [Netty](http://netty.io/) ). The use of a newer or older version of the library may or may result in a working client. In any case, if using a different version, update the jar name when necessary.
+You can download netty from its website ( [Netty](http://netty.io/) ). The use of a newer or older version of the library may or may not result in a working client. In any case, if using a different version, update the jar name when necessary.
 Once downloaded place it under a newly created lib folder under the client folder.
 
 ### Compile ###
