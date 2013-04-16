@@ -18,8 +18,15 @@ var app = require('express')(),
  server = require('http').createServer(app),
  io = require('socket.io').listen(server);
 
+var conf = "./conf";
+process.argv.forEach(function (val, index, array) {
+  if (index == 2) {  
+    console.log("Using custom conf file " + val + ".js");
+    conf = val;
+  }
+});
 
-
+conf = require(conf);
 
 //io.set('heartbeats',false);
 io.set('heartbeat timeout',10000);
@@ -27,13 +34,10 @@ io.set('heartbeat interval',9000);
 io.set('close timeout', 9000);
 io.set("log level", 0);
 
-module.exports.start = function(conf) {
-  server.listen(conf.LISTEN_PORT);
+server.listen(conf.LISTEN_PORT);
 
-  require("./Generator")(conf.MEX_PER_SECOND,conf.BURST,function(timestamp) {
-    io.sockets.emit('timestamp', timestamp);
-  });
-  
-  console.log("UP AND RUNNING");
-};
-
+io.sockets.on('connection', function(socket) {
+    socket.on('generated', function(data) {
+        io.sockets.emit('timestamp', data);
+    });
+});

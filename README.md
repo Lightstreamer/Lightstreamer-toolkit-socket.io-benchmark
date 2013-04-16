@@ -10,11 +10,12 @@ To have comparable results the server processes should be run on a mono-core mac
 ### Required libs ###
 *   socket.io 
 *   express.js
+*   socket.io-client
 *   lightstreamer-adapter 
 
 you can install everything using npm
 ```
-npm install socket.io express lightstreamer-adapter
+npm install socket.io express socket.io-client lightstreamer-adapter
 ```
 
 ### Run ###
@@ -27,14 +28,20 @@ npm install socket.io express lightstreamer-adapter
      -    Create a lib folder
      -    Copy the ls-proxy-adapters.jar from the Lightstreamer distribution into it (you can find it under DOCS-SDKs/sdk_adapter_remoting_infrastructure/lib)
      -    Start Lightstreamer
- 
-Then from the server folder run
+*    Start the generator
+     -    From the server folder run
 ```
 node src/server ls ../conf/conf.js
 ```
 
 #### Socket.io ####
-From the server folder run
+*    Launch the Socket.io server
+     -    From the server folder run
+```
+node src/SocketIoServer ../conf/conf.js
+```
+*    Start the generator
+     -    From the server folder run
 ```
 node src/server io ../conf/conf.js
 ```

@@ -12,31 +12,17 @@ Copyright 2013 Weswit s.r.l.
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/   
+*/
+var SocketIoClient = require('socket.io-client');
 
-var conf = "./conf";
-var type = "ls";
-process.argv.forEach(function (val, index, array) {
-  if (index <= 1) {
-    return;
-  } else if (index == 2) {  
-    type = val;
-  } else if (index == 3) {
-    console.log("Using custom conf file " + val + ".js");
-    conf = val;
-  }
-});
-
-conf = require(conf);
-
-console.log("Running " + (type == "ls" ? "Lightstreamer" : "Socket.io") + " server");
-console.log(conf);
-
-var server = null;
-if (type == "ls") {
-  server = require("./LightstreamerAdapter");
-} else { // "io"
-  server = require("./SocketIoGenerator");
-}
-
-server.start(conf);
+module.exports.start = function(conf) {
+  var socket = SocketIoClient.connect("http://"+conf.LS_SERVER_HOST+":"+conf.LISTEN_PORT);
+  
+  socket.on('connect',function() {
+    require("./Generator")(conf.MEX_PER_SECOND,conf.BURST,function(timestamp) {
+      socket.emit("generated",timestamp);
+    });
+  });
+  
+  console.log("UP AND RUNNING");
+};

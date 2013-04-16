@@ -17,11 +17,12 @@ module.exports = {
 
   MEX_PER_SECOND:10,
   BURST: 1,
+  LS_SERVER_HOST: "localhost",
 
   //socket.io only conf
   LISTEN_PORT: 8080,
+  
   //ls adapter only conf
-  LS_SERVER_HOST: "localhost",
   LS_REQ_RESP_PORT: 12001,
   LS_WRITE_PORT: 12002,
   LS_META_PORT: 12003
