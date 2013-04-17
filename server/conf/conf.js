@@ -21,6 +21,7 @@ module.exports = {
 
   //socket.io only conf
   LISTEN_PORT: 8080,
+  TIMESTAMP_LISTEN_PORT: 8081,
   
   //ls adapter only conf
   LS_REQ_RESP_PORT: 12001,

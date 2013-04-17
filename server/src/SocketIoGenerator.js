@@ -16,7 +16,7 @@ Copyright 2013 Weswit s.r.l.
 var SocketIoClient = require('socket.io-client');
 
 module.exports.start = function(conf) {
-  var socket = SocketIoClient.connect("http://"+conf.LS_SERVER_HOST+":"+conf.LISTEN_PORT);
+  var socket = SocketIoClient.connect("http://"+conf.LS_SERVER_HOST+":"+conf.TIMESTAMP_LISTEN_PORT);
   
   socket.on('connect',function() {
     require("./Generator")(conf.MEX_PER_SECOND,conf.BURST,function(timestamp) {
