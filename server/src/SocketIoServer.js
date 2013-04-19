@@ -13,66 +13,57 @@ Copyright 2013 Weswit s.r.l.
    See the License for the specific language governing permissions and
    limitations under the License.
 */   
-   
 
- 
-
-var conf = "./conf";
-process.argv.forEach(function (val, index, array) {
-  if (index == 2) {  
-    console.log("Using custom conf file " + val + ".js");
-    conf = val;
-  }
-});
-
-conf = require(conf);
-
-
-function startServer(port) {
+function startServer(listenPort,redisPort) {
   var app = require('express')();
   var server = require('http').createServer(app);
   var io = require('socket.io').listen(server);
+  var redis = require("socket.io/node_modules/redis");
+  var RedisStore = require('socket.io/lib/stores/redis');
   
   //io.set('heartbeats',false);
   io.set('heartbeat timeout',10000);
   io.set('heartbeat interval',9000);
   io.set('close timeout', 9000);
-  io.set("log level", 0);
+  io.set("log level", 1);
+  io.set('store',new RedisStore({
+      redisPub : redis.createClient(redisPort,"localhost"),
+      redisSub : redis.createClient(redisPort,"localhost"),
+      redisClient : redis.createClient(redisPort,"localhost")
+  }));
   
-  server.listen(port);
+  server.listen(listenPort);
   
   return io;
 }
 
-var cluster = require('cluster');
-var numCPUs = require('os').cpus().length;
 
+   
+var cluster = require('cluster');   
 if (cluster.isMaster) {
-  var io = startServer(conf.TIMESTAMP_LISTEN_PORT);
-  
-  io.sockets.on('connection', function(socket) {
-    socket.on('generated', function(data) {
-      //when a message is received from the generator...
-      for (var id in cluster.workers) {
-        //...it is forwarded to all the active workers...
-        cluster.workers[id].send(data);
-      }      
-    });
-  });
-  
-  
-  // Fork workers.
+  var numCPUs = require('os').cpus().length;
+   // Fork workers.
   for (var i = 0; i < numCPUs; i++) {
     cluster.fork();
   }
   
 } else {
-
-  var io = startServer(conf.LISTEN_PORT);
-
-  process.on('message', function(msg) {
-    //...that in turn forward the message to their clients
-    io.sockets.emit('timestamp', msg);
+  var conf = "./conf";
+  process.argv.forEach(function (val, index, array) {
+    if (index == 2) {  
+      console.log("Using custom conf file " + val + ".js");
+      conf = val;
+    }
+  });
+  conf = require(conf);
+  
+  var io = startServer(conf.LISTEN_PORT,conf.REDIS_LISTEN_PORT);
+  
+  io.sockets.on('connection', function(socket) {
+    socket.on('generated', function(data) {
+      //when a message is received from the generator it is broadcasted to all the clients
+      socket.broadcast.emit("timestamp",data);
+    });
   });
   
 }
