@@ -22,7 +22,7 @@ npm install socket.io express socket.io-client lightstreamer-adapter
 
 #### Lightstreamer #####
 *    Launch Lightstreamer server:
-     -    Install and configure the Lightstreamer server following its instructions
+     -    Install and configure the Lightstreamer server following its instructions: [http://www.lightstreamer.com/download](http://www.lightstreamer.com/download)
      -    Create a new folder in its adapters subfolder
      -    Copy the adapters.xml file from server/conf/adapters.xml
      -    Create a lib folder
@@ -35,6 +35,9 @@ node src/server ls ../conf/conf.js
 ```
 
 #### Socket.io ####
+*    Launch Redis
+     -    Install and configure the Redis server following its instructions: [http://redis.io/download](http://redis.io/download)
+     -    Start redis
 *    Launch the Socket.io server
      -    From the server folder run
 ```
