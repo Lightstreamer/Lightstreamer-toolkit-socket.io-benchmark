@@ -22,7 +22,8 @@ module.exports.start = function(conf) {
     require("./Generator")(conf.MEX_PER_SECOND,conf.BURST,function(timestamp) {
       socket.emit("generated",timestamp);
     });
+    console.log("UP AND RUNNING");
   });
   
-  console.log("UP AND RUNNING");
+  
 };
