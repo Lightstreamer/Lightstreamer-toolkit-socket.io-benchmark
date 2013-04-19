@@ -3,8 +3,6 @@
 ## Requirements ##
 This README assumes that node.js and a JDK are already installed on the target machines and referenced in the global path.
 
-To have comparable results the server processes should be run on a mono-core machine; an alternative would be to configure socket.io to run on multiple cores (see [Configuring Socket.IO](https://github.com/LearnBoost/socket.io/wiki/Configuring-Socket.IO) ).
-
 ## Server ##
 
 ### Required libs ###
