@@ -48,11 +48,6 @@ var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
 
 if (cluster.isMaster) {
-  // Fork workers.
-  for (var i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
-  
   var io = startServer(conf.TIMESTAMP_LISTEN_PORT);
   
   io.sockets.on('connection', function(socket) {
@@ -65,6 +60,11 @@ if (cluster.isMaster) {
     });
   });
   
+  
+  // Fork workers.
+  for (var i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
   
 } else {
 
