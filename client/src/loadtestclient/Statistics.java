@@ -41,7 +41,7 @@ public class Statistics {
     
     private ConcurrentLinkedQueue<Integer> queue = new ConcurrentLinkedQueue<Integer>();
     
-    private long startTime;
+    private Date startTime;
     private boolean enabled = false;
     
     //string buffer used to compone log report
@@ -82,7 +82,7 @@ public class Statistics {
     public void onRampUpEnd() {
         System.out.println("Test " + this.testName + " starts collecting data");
         this.enabled  = true;
-        this.startTime = new Date().getTime();
+        this.startTime = new Date();
     }
     
     public void onTestComplete() {
@@ -98,11 +98,15 @@ public class Statistics {
 
         this.alive  = false;
         
+        Date now = new Date();
+        
         this.append(results, "*********TEST ", "", this.type);
+        this.append(results, "Start time ", "", this.startTime.toString());
+        this.append(results, "End time ", "", now.toString());
         this.append(results, "Clients ", "", this.clientsNum);
         
       //THROUGHPUT
-        long spentTime = new Date().getTime()-this.startTime;
+        long spentTime = now.getTime()-this.startTime.getTime();
         long throughput = totUpdates/(spentTime/1000);
        
         this.append(results, "Throughput ", " messages per second", throughput);
