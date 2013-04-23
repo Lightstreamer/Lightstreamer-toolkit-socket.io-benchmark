@@ -35,13 +35,13 @@ public class NodeLoadTest {
     private static int CONNECT_BATCH_INTERVAL = 1000;
     
     private static int MAX_DELAY_MILLIS = 5000;
-    
-    private static int PORT = 8080;
-    private static String HOST = "localhost";
+
+    private static String SERVER_URL = "localhost:8080";
               
     private static String FILE_PATH = "results.log";
     private static boolean TAB_LOG = true;
     
+    private static String CLOSED_CLIENT_POLICY = "IGNORE";
     
     private static int currentClients = 0;
     private static int expectingClients = 0;
@@ -49,6 +49,7 @@ public class NodeLoadTest {
     
     private static Statistics stats = null;
     
+    private static boolean useIO = false;
     
     
     /**
@@ -59,7 +60,7 @@ public class NodeLoadTest {
         if (args.length < 1) {
             return;
         }
-        boolean useIO = args[0].equals("io");
+        useIO = args[0].equals("io");
         String type = useIO ? "io" : "ls";
         
         if (args.length > 1) {
@@ -77,16 +78,19 @@ public class NodeLoadTest {
             
             MAX_DELAY_MILLIS = Integer.parseInt(props.getProperty("MAX_DELAY_MILLIS"));
             
-            HOST = props.getProperty("HOST");
-            PORT = Integer.parseInt(props.getProperty("PORT"));
+            String host = props.getProperty("HOST");
+            int port = Integer.parseInt(props.getProperty("PORT"));
+            SERVER_URL = host+":"+port;    
             
             FILE_PATH = props.getProperty("FILE_PATH");
             
             TAB_LOG = props.getProperty("TAB_LOG").equals("true");
             
+            CLOSED_CLIENT_POLICY = props.getProperty("CLOSED_CLIENT_POLICY");
+            
         }
         
-        final String SERVER_URL = HOST+":"+PORT;
+        
         
         CListener currentTestListener = new CListener(); 
         
@@ -155,10 +159,26 @@ public class NodeLoadTest {
             System.out.println("GOT ERROR!");
         }
 
-        public synchronized void onClose() {
-            disconnectedClients++;
-            currentClients--;
-            System.out.println("WARNING disconnected client! Currently " + disconnectedClients + " disconnected clients");
+        public void onClose() {
+            synchronized(this) {
+                disconnectedClients++;
+                System.out.println("WARNING disconnected client! Currently " + disconnectedClients + " disconnected clients");
+            
+                if (CLOSED_CLIENT_POLICY.equals("ABORT")) {
+                    System.exit(1);
+                    return;
+                } else if (CLOSED_CLIENT_POLICY.equals("RETRY")) {
+                    currentClients--;
+                    //will launch another client from outside the synchornized block
+                } else { //IGNORE do nothing
+                    return;
+                }
+            }
+            try {
+                new BasicWSClient(SERVER_URL,this,useIO);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
