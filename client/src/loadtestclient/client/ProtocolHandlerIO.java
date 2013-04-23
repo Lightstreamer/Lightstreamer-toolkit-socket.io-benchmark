@@ -44,7 +44,6 @@ public class ProtocolHandlerIO extends ProtocolHandler  {
         
         switch (text.charAt(0)) {
             case '5':
-                // We want to extract the actual message. Going to hack this shit.
                 String[] messageParts = text.split(":");
                 String lastPart = messageParts[messageParts.length - 1];
                 String chatPayload = lastPart.substring(1, lastPart.length() - 2);
