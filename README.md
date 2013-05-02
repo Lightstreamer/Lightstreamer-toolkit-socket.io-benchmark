@@ -1,4 +1,4 @@
-# TODO title #
+# Lightstreamer-toolkit-socket.io-benchmark #
 
 ## Requirements ##
 This README assumes that node.js and a JDK are already installed on the target machines and referenced in the global path.
@@ -18,14 +18,14 @@ npm install socket.io express socket.io-client lightstreamer-adapter
 
 ### Run ###
 The following instructions assume everything is run on the same machine; configuration files need to be edited to run the various pieces on different machines. 
-The suggested setup is to run the clients and the generator on a machine and the server on a different one; this will prevent you from having to deal with clock synchronization issues (as long as the clocks of a single multi-core machine are synchronized themselves).
+The suggested setup is to run the clients and the generator on a machine and the server on a different one; this will prevent you from having to deal with clock synchronization issues (as long as the clocks of a multi-core machine are synchronized themselves).
 
 #### Lightstreamer #####
 *    Launch Lightstreamer server:
      -    Install and configure the Lightstreamer server following its instructions: [http://www.lightstreamer.com/download](http://www.lightstreamer.com/download)
      -    Create a new folder in its adapters subfolder
      -    Copy the adapters.xml file from server/conf/adapters.xml
-     -    Create a lib folder
+     -    Create a lib folder inside the new subfolder
      -    Copy the ls-proxy-adapters.jar from the Lightstreamer distribution into it (you can find it under DOCS-SDKs/sdk_adapter_remoting_infrastructure/lib)
      -    Start Lightstreamer
 *    Start the generator
@@ -88,3 +88,4 @@ From the client folder
 ## Lightstreamer Compatibility Notes ##
 Compatible with Lightstreamer Server since 5.0
 Compatible with Adapter Remoting Infrastructure since 1.4.3
+Compatible with Lightstreamer SDK for Node Adapters 1.0.0
