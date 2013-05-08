@@ -1,4 +1,4 @@
-# Toolkit for Benchmarking Socket.io and Lightstreamer-node #
+# Toolkit for Benchmarking Socket.io and Lightstreamer-Node #
 
 ## Requirements ##
 This README assumes that node.js and a JDK are already installed on the target machines and referenced in the global path.
