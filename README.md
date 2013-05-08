@@ -1,4 +1,4 @@
-# Lightstreamer-toolkit-socket.io-benchmark #
+# Toolkit for Benchmarking Socket.io and Lightstreamer-node #
 
 ## Requirements ##
 This README assumes that node.js and a JDK are already installed on the target machines and referenced in the global path.
@@ -86,6 +86,6 @@ From the client folder
 * [Lightstreamer SDK for Node Adapters](https://github.com/Weswit/Lightstreamer-lib-node-adapter)
 
 ## Lightstreamer Compatibility Notes ##
-Compatible with Lightstreamer Server since 5.0
-Compatible with Adapter Remoting Infrastructure since 1.4.3
-Compatible with Lightstreamer SDK for Node Adapters 1.0.0
+Compatible with Lightstreamer Server since 5.0  
+Compatible with Adapter Remoting Infrastructure since 1.4.3  
+Compatible with Lightstreamer SDK for Node Adapters 1.0.0  
