@@ -45,7 +45,7 @@ module.exports.start = function(conf) {
   // Handle subscribe event
   dataProvider.on('subscribe', function(itemName, response) {
     if(itemName != "timestamp") {
-      response.fail();
+      response.error("Unexpected subscription");
       return;
     }
     console.log("Subcribed item: " + itemName);
