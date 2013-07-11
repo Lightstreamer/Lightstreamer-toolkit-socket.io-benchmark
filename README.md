@@ -3,6 +3,8 @@
 This toolkit can be used to do simple benchmarking of both Socket.io and Lightstreamer. The generated data can then be easily compared between the two solutions.
 The toolkit contains a javascript generator that connects respectively to a Socket.io server or to a Lightstreamer server that in turn broadcasts the generated updates to Java clients over WebSockets.
 
+A blog post detailing a benchmark run using this toolkit is available on the [Lightstreamer blog](http://blog.lightstreamer.com/2013/05/benchmarking-socketio-vs-lightstreamer.html)
+
 ## Requirements ##
 This README assumes that Node.js and a JDK are already installed on the target machines and referenced in the global path.
 
