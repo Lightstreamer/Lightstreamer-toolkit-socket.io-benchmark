@@ -18,12 +18,14 @@ Copyright 2013 Weswit s.r.l.
 
 	<metadata_provider>
 		<adapter_class>com.lightstreamer.adapters.remote.metadata.RobustNetworkedMetadataProvider</adapter_class>
+		<classloader>log-enabled</classloader>
 		<param name="request_reply_port">12003</param>
 		<param name="timeout">36000000</param>
 	</metadata_provider>
 
 	<data_provider>
 		<adapter_class>com.lightstreamer.adapters.remote.data.RobustNetworkedDataProvider</adapter_class>
+		<classloader>log-enabled</classloader>
 		<param name="request_reply_port">12001</param>
 		<param name="notify_port">12002</param>
 		<param name="timeout">36000000</param>
