@@ -88,7 +88,7 @@ From the client folder
 * [Lightstreamer](http://www.lightstreamer.com)
 * [Node.js](http://nodejs.org/)
 * [Socket.io](http://socket.io/)
-* [Lightstreamer SDK for Node Adapters](https://github.com/Weswit/Lightstreamer-lib-node-adapter)
+* [Lightstreamer SDK for Node Adapters](https://github.com/Lightstreamer/Lightstreamer-lib-node-adapter)
 
 ## Lightstreamer Compatibility Notes ##
 Compatible with Lightstreamer Server since 5.0  
