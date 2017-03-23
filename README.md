@@ -25,7 +25,7 @@ npm install socket.io express socket.io-client lightstreamer-adapter
 The following instructions assumes everything is run on the same machine; configuration files need to be edited to run the various pieces on different machines. 
 The suggested setup is to run the clients and the generator on a machine and the server on a different one; this will prevent you from having to deal with clock synchronization issues (as long as the clocks of a multi-core machine are synchronized themselves).
 
-#### Lightstreamer #####
+#### Lightstreamer ####
 *    Launch Lightstreamer server:
      -    Install and configure the Lightstreamer server following its instructions: [http://www.lightstreamer.com/download](http://www.lightstreamer.com/download)
      -    Create a new folder in its adapters subfolder
